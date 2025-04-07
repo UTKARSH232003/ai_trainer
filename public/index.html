@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Preparation Scheduler</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* More explicit styling that won't depend on AI formatting */
+        .content-card {
+            margin-bottom: 20px;
+        }
+
+        .content-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #4338ca;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .content-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #4f46e5;
+            margin-top: 16px;
+            margin-bottom: 12px;
+        }
+
+        .content-card p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .content-card ul,
+        .content-card ol {
+            margin-left: 25px;
+            margin-bottom: 16px;
+        }
+
+        .content-card ul {
+            list-style-type: disc;
+        }
+
+        .content-card ol {
+            list-style-type: decimal;
+        }
+
+        .content-card li {
+            margin-bottom: 8px;
+        }
+
+        /* Day card styling */
+        .day-card {
+            background-color: #f9fafb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #6366f1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .day-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #4338ca;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .time-block {
+            display: flex;
+            padding: 8px 0;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .time-block:last-child {
+            border-bottom: none;
+        }
+
+        .time-label {
+            font-weight: 600;
+            min-width: 130px;
+            color: #4b5563;
+        }
+
+        .time-content {
+            flex: 1;
+        }
+
+        @media (max-width: 640px) {
+            .time-block {
+                flex-direction: column;
+            }
+
+            .time-label {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-indigo-100 to-purple-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-indigo-800 mb-2">Exam Preparation Scheduler</h1>
+            <p class="text-lg text-gray-600">Plan your exam preparation effectively and ace your tests</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-3xl mx-auto">
+            <!-- Input Form Card -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
+                    <i class="fas fa-calendar-alt mr-2"></i>Create Your Study Plan
+                </h2>
+
+                <form id="examForm" class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="subjectName" class="block text-gray-700 font-medium mb-1">Subject Name</label>
+                            <input type="text" id="subjectName" name="subjectName" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+
+                        <div>
+                            <label for="examDate" class="block text-gray-700 font-medium mb-1">Exam Date</label>
+                            <input type="date" id="examDate" name="examDate" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="examTime" class="block text-gray-700 font-medium mb-1">Exam Time</label>
+                            <input type="time" id="examTime" name="examTime" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+
+                        <div>
+                            <label for="additionalInfo" class="block text-gray-700 font-medium mb-1">Additional
+                                Information (Optional)</label>
+                            <input type="text" id="additionalInfo" name="additionalInfo"
+                                placeholder="E.g., specific topics to focus on"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="studyPreference" class="block text-gray-700 font-medium mb-1">Study Time
+                            Preference</label>
+                        <select id="studyPreference" name="studyPreference"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="morning">Morning Person (Early hours)</option>
+                            <option value="afternoon">Afternoon Focus</option>
+                            <option value="evening">Evening/Night Study</option>
+                            <option value="balanced">Balanced Throughout Day</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                            <i class="fas fa-magic mr-2"></i> Generate Study Plan
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8 text-center">
+                <div class="flex flex-col items-center justify-center">
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600 mb-4"></div>
+                    <p class="text-lg text-gray-700">Creating your personalized study plan...</p>
+                    <p class="text-sm text-gray-500 mt-2">This might take a moment as we analyze your subject
+                        requirements</p>
+                </div>
+            </div>
+
+            <!-- Results Container -->
+            <div id="resultsContainer" class="hidden">
+                <!-- Syllabus Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                    <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
+                        <i class="fas fa-book mr-2"></i>Syllabus Breakdown
+                    </h2>
+                    <div id="syllabusContent" class="prose max-w-none"></div>
+                </div>
+
+                <!-- Study Schedule Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                    <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
+                        <i class="fas fa-clock mr-2"></i>Daily Study Schedule
+                    </h2>
+                    <div id="scheduleContent" class="prose max-w-none"></div>
+                </div>
+
+                <!-- MCQ Test Button -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-8 text-center">
+                    <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
+                        <i class="fas fa-check-circle mr-2"></i>Test Your Knowledge
+                    </h2>
+                    <p class="text-gray-600 mb-4">Ready to check how well you've mastered the material?</p>
+                    <button id="startMCQButton"
+                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                        Start MCQ Test
+                    </button>
+                </div>
+            </div>
+
+            <!-- MCQ Test Container -->
+            <div id="mcqContainer" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
+                    <i class="fas fa-question-circle mr-2"></i>Knowledge Check
+                </h2>
+                <div id="mcqContent" class="space-y-6"></div>
+                <div class="mt-6 text-center">
+                    <button id="submitMCQButton"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                        Submit Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Modal -->
+            <div id="resultsModal"
+                class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-white rounded-xl shadow-lg p-8 max-w-lg w-full mx-4">
+                    <h2 class="text-2xl font-bold text-indigo-700 mb-4">Your Test Results</h2>
+                    <div id="resultsContent" class="mb-6"></div>
+                    <div class="flex justify-center">
+                        <button id="closeResultsButton"
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 text-gray-600 text-sm">
+            <p>© 2025 Exam Preparation Scheduler | Made with ❤️ for students</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const examForm = document.getElementById('examForm');
+            const loadingState = document.getElementById('loadingState');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const mcqContainer = document.getElementById('mcqContainer');
+            const startMCQButton = document.getElementById('startMCQButton');
+            const submitMCQButton = document.getElementById('submitMCQButton');
+            const resultsModal = document.getElementById('resultsModal');
+            const closeResultsButton = document.getElementById('closeResultsButton');
+
+            // Form submission
+            examForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Show loading state
+                examForm.parentElement.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+
+                // Gather form data
+                const formData = new FormData(examForm);
+                const data = Object.fromEntries(formData.entries());
+
+                // Calculate days until exam
+                const today = new Date();
+                const examDate = new Date(data.examDate);
+                const daysUntilExam = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
+
+                // Add to data object
+                data.daysUntilExam = daysUntilExam;
+
+                // Send data to server
+                fetch('/generate-plan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    // Add this to the fetch handler that processes the server response 
+                    .then(data => {
+                        // Hide loading state
+                        loadingState.classList.add('hidden');
+
+                        // Show results
+                        resultsContainer.classList.remove('hidden');
+
+                        // SYLLABUS SECTION - Complete rebuild
+                        const syllabusContent = document.getElementById('syllabusContent');
+                        syllabusContent.className = 'content-card';
+
+                        // Parse the raw syllabus content to extract sections
+                        const rawSyllabus = data.syllabus;
+                        const syllabusLines = rawSyllabus.split('\n');
+
+                        // Build clean HTML structure
+                        let syllabusHTML = '';
+                        let inList = false;
+
+                        syllabusLines.forEach(line => {
+                            line = line.trim();
+                            if (!line) return; // Skip empty lines
+
+                            // Handle headers
+                            if (line.startsWith('# ')) {
+                                syllabusHTML += `<h2>${line.substring(2)}</h2>`;
+                            }
+                            else if (line.startsWith('## ')) {
+                                syllabusHTML += `<h3>${line.substring(3)}</h3>`;
+                            }
+                            // Handle list items
+                            else if (line.startsWith('- ') || line.startsWith('* ')) {
+                                if (!inList) {
+                                    syllabusHTML += '<ul>';
+                                    inList = true;
+                                }
+                                syllabusHTML += `<li>${line.substring(2)}</li>`;
+                            }
+                            else if (line.match(/^\d+\.\s/)) {
+                                if (!inList) {
+                                    syllabusHTML += '<ol>';
+                                    inList = true;
+                                }
+                                syllabusHTML += `<li>${line.substring(line.indexOf('.') + 1)}</li>`;
+                            }
+                            // Close lists when needed
+                            else {
+                                if (inList) {
+                                    syllabusHTML += inList ? '</ul>' : '</ol>';
+                                    inList = false;
+                                }
+                                syllabusHTML += `<p>${line}</p>`;
+                            }
+                        });
+
+                        // Close any open list
+                        if (inList) {
+                            syllabusHTML += inList ? '</ul>' : '</ol>';
+                        }
+
+                        syllabusContent.innerHTML = syllabusHTML;
+
+                        // SCHEDULE SECTION - Complete rebuild
+                        const scheduleContent = document.getElementById('scheduleContent');
+                        scheduleContent.innerHTML = '';
+
+                        const rawSchedule = data.schedule;
+                        const scheduleLines = rawSchedule.split('\n');
+
+                        let currentDay = null;
+                        let dayContainer = null;
+
+                        scheduleLines.forEach(line => {
+                            line = line.trim();
+                            if (!line) return; // Skip empty lines
+
+                            // Check if this is a day header
+                            const dayMatch = line.match(/^#+\s*(Day \d+|Day Before Exam|.*?Day.*?)/i);
+                            if (dayMatch) {
+                                // Create new day card
+                                dayContainer = document.createElement('div');
+                                dayContainer.className = 'day-card';
+
+                                const dayTitle = document.createElement('div');
+                                dayTitle.className = 'day-title';
+                                dayTitle.textContent = dayMatch[1];
+                                dayContainer.appendChild(dayTitle);
+
+                                scheduleContent.appendChild(dayContainer);
+                                currentDay = dayMatch[1];
+                            }
+                            // Check if this is a time slot (xx:xx AM - xx:xx PM)
+                            else if (line.match(/\d{1,2}:\d{2}\s*(?:AM|PM)\s*[-–]\s*\d{1,2}:\d{2}\s*(?:AM|PM)/i)) {
+                                if (!dayContainer) {
+                                    dayContainer = document.createElement('div');
+                                    dayContainer.className = 'day-card';
+                                    scheduleContent.appendChild(dayContainer);
+                                }
+
+                                const timeMatch = line.match(/(\d{1,2}:\d{2}\s*(?:AM|PM)\s*[-–]\s*\d{1,2}:\d{2}\s*(?:AM|PM))\s*[:–-]?\s*(.*)/i);
+
+                                if (timeMatch) {
+                                    const timeBlock = document.createElement('div');
+                                    timeBlock.className = 'time-block';
+
+                                    const timeLabel = document.createElement('div');
+                                    timeLabel.className = 'time-label';
+                                    timeLabel.textContent = timeMatch[1];
+
+                                    const timeContent = document.createElement('div');
+                                    timeContent.className = 'time-content';
+                                    timeContent.textContent = timeMatch[2];
+
+                                    timeBlock.appendChild(timeLabel);
+                                    timeBlock.appendChild(timeContent);
+                                    dayContainer.appendChild(timeBlock);
+                                } else {
+                                    // Regular paragraph in a day
+                                    const paragraph = document.createElement('p');
+                                    paragraph.textContent = line;
+                                    dayContainer.appendChild(paragraph);
+                                }
+                            }
+                            else if (dayContainer) {
+                                // Regular paragraph in a day
+                                const paragraph = document.createElement('p');
+                                paragraph.textContent = line;
+                                dayContainer.appendChild(paragraph);
+                            }
+                        });
+
+                        // MCQ Questions handling
+                        if (data.mcqQuestions && data.mcqQuestions.length) {
+                            window.mcqQuestions = data.mcqQuestions.slice(0, 10);
+                        } else {
+                            console.log("Not enough MCQ questions returned, requesting new ones");
+
+                            fetch('/generate-mcqs', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    subjectName: document.getElementById('subjectName').value,
+                                    additionalInfo: document.getElementById('additionalInfo').value
+                                })
+                            })
+                                .then(response => response.json())
+                                .then(mcqData => {
+                                    window.mcqQuestions = mcqData.mcqQuestions.slice(0, 10);
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching MCQs:', error);
+                                });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        loadingState.classList.add('hidden');
+                        alert('There was an error generating your study plan. Please try again.');
+                        examForm.parentElement.classList.remove('hidden');
+                    });
+            });
+
+            // Start MCQ Test button
+            startMCQButton.addEventListener('click', function () {
+                resultsContainer.classList.add('hidden');
+                mcqContainer.classList.remove('hidden');
+
+                // Populate MCQ questions
+                const mcqContent = document.getElementById('mcqContent');
+                mcqContent.innerHTML = '';
+
+                if (window.mcqQuestions && window.mcqQuestions.length) {
+                    window.mcqQuestions.forEach((question, index) => {
+                        const questionDiv = document.createElement('div');
+                        questionDiv.className = 'mcq-question';
+
+                        questionDiv.innerHTML = `
+                            <p class="font-medium text-lg">${index + 1}. ${question.question}</p>
+                            <div class="mt-2 space-y-2">
+                                ${question.options.map((option, i) => `
+                                    <div class="flex items-start">
+                                        <input type="radio" id="q${index}o${i}" name="q${index}" value="${i}" class="mt-1 mr-2">
+                                        <label for="q${index}o${i}" class="text-gray-700">${option}</label>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+
+                        mcqContent.appendChild(questionDiv);
+                    });
+                } else {
+                    mcqContent.innerHTML = '<p>Failed to load MCQ questions. Please go back and try again.</p>';
+                }
+            });
+
+            // Submit MCQ Test button
+            submitMCQButton.addEventListener('click', function () {
+                const answers = [];
+                let correctAnswers = 0;
+                let totalQuestions = window.mcqQuestions.length;
+
+                // Check answers
+                window.mcqQuestions.forEach((question, index) => {
+                    const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                    if (selectedOption) {
+                        const userAnswer = parseInt(selectedOption.value);
+                        if (userAnswer === question.correctAnswer) {
+                            correctAnswers++;
+                        }
+                    }
+                });
+
+                // Calculate score
+                const score = Math.round((correctAnswers / totalQuestions) * 100);
+
+                // Display results
+                const resultsContent = document.getElementById('resultsContent');
+                resultsContent.innerHTML = `
+                    <div class="text-center">
+                        <div class="text-5xl font-bold ${score >= 70 ? 'text-green-600' : score >= 50 ? 'text-yellow-600' : 'text-red-600'}">
+                            ${score}%
+                        </div>
+                        <p class="text-lg mt-2">You got ${correctAnswers} out of ${totalQuestions} questions correct.</p>
+                        
+                        <div class="mt-4 p-4 rounded-lg ${score >= 70 ? 'bg-green-100' : score >= 50 ? 'bg-yellow-100' : 'bg-red-100'}">
+                            <p class="font-medium">
+                                ${score >= 70 ? 'Excellent work! You\'re well-prepared for your exam.' :
+                        score >= 50 ? 'Good effort! Review the topics you missed before your exam.' :
+                            'You might need more study time. Focus on reviewing the key concepts.'}
+                            </p>
+                        </div>
+                    </div>
+                `;
+
+                resultsModal.classList.remove('hidden');
+            });
+
+            // Close results modal
+            closeResultsButton.addEventListener('click', function () {
+                resultsModal.classList.add('hidden');
+                mcqContainer.classList.add('hidden');
+                resultsContainer.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+
+</html>
