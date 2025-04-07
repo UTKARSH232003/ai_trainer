@@ -150,7 +150,75 @@ function createSyllabusPrompt(subject, additionalInfo) {
     Include approximately 5-8 main topics with relevant subtopics under each.
   `;
 }
-
+function createDefaultDayCard() {
+  const dayCard = document.createElement('div');
+  dayCard.className = 'bg-white rounded-lg shadow-md border-l-4 border-indigo-500';
+  
+  const dayHeader = document.createElement('div');
+  dayHeader.className = 'bg-gray-50 px-4 py-3 rounded-t-lg border-b border-gray-200';
+  
+  const dayTitle = document.createElement('h3');
+  dayTitle.className = 'text-xl font-semibold text-indigo-700';
+  dayTitle.textContent = 'Study Day';
+  dayHeader.appendChild(dayTitle);
+  
+  dayCard.appendChild(dayHeader);
+  
+  const dayContent = document.createElement('div');
+  dayContent.className = 'p-4';
+  dayCard.appendChild(dayContent);
+  
+  // Create morning, afternoon, evening sections
+  const timeBlocks = document.createElement('div');
+  timeBlocks.className = 'grid grid-cols-1 md:grid-cols-3 gap-4';
+  
+  // Morning section
+  const morningSection = document.createElement('div');
+  morningSection.className = 'bg-blue-50 rounded-lg p-3';
+  
+  const morningHeader = document.createElement('h4');
+  morningHeader.className = 'font-medium text-blue-800 border-b border-blue-100 pb-2 mb-2 flex items-center';
+  morningHeader.innerHTML = '<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 2zM10 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zM10 7a3 3 0 100 6 3 3 0 000-6zM15.657 5.404a.75.75 0 10-1.06-1.06l-1.061 1.06a.75.75 0 001.06 1.06l1.06-1.06zM6.464 14.596a.75.75 0 10-1.06-1.06l-1.06 1.06a.75.75 0 001.06 1.06l1.06-1.06zM18 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0118 10zM5 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 015 10zM14.596 15.657a.75.75 0 001.06-1.06l-1.06-1.061a.75.75 0 10-1.06 1.06l1.06 1.06zM5.404 6.464a.75.75 0 001.06-1.06l-1.06-1.06a.75.75 0 10-1.06 1.06l1.06 1.06z"></path></svg>Morning';
+  morningSection.appendChild(morningHeader);
+  
+  const morningContent = document.createElement('div');
+  morningContent.className = 'morning-content text-sm space-y-2';
+  morningSection.appendChild(morningContent);
+  
+  // Afternoon section
+  const afternoonSection = document.createElement('div');
+  afternoonSection.className = 'bg-yellow-50 rounded-lg p-3';
+  
+  const afternoonHeader = document.createElement('h4');
+  afternoonHeader.className = 'font-medium text-yellow-800 border-b border-yellow-100 pb-2 mb-2 flex items-center';
+  afternoonHeader.innerHTML = '<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"></path></svg>Afternoon';
+  afternoonSection.appendChild(afternoonHeader);
+  
+  const afternoonContent = document.createElement('div');
+  afternoonContent.className = 'afternoon-content text-sm space-y-2';
+  afternoonSection.appendChild(afternoonContent);
+  
+  // Evening section
+  const eveningSection = document.createElement('div');
+  eveningSection.className = 'bg-purple-50 rounded-lg p-3';
+  
+  const eveningHeader = document.createElement('h4');
+  eveningHeader.className = 'font-medium text-purple-800 border-b border-purple-100 pb-2 mb-2 flex items-center';
+  eveningHeader.innerHTML = '<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>Evening';
+  eveningSection.appendChild(eveningHeader);
+  
+  const eveningContent = document.createElement('div');
+  eveningContent.className = 'evening-content text-sm space-y-2';
+  eveningSection.appendChild(eveningContent);
+  
+  timeBlocks.appendChild(morningSection);
+  timeBlocks.appendChild(afternoonSection);
+  timeBlocks.appendChild(eveningSection);
+  
+  dayContent.appendChild(timeBlocks);
+  
+  return dayCard;
+}
 function createSchedulePrompt(subject, daysUntilExam, examTime, additionalInfo, studyPreference) {
   return `
     Create a detailed daily study schedule for preparing for a "${subject}" exam that is ${daysUntilExam} days away.

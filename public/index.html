@@ -299,68 +299,168 @@
 
                         // SYLLABUS SECTION - Complete rebuild
                         const syllabusContent = document.getElementById('syllabusContent');
-                        syllabusContent.className = 'content-card';
+                        syllabusContent.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
 
                         // Parse the raw syllabus content to extract sections
                         const rawSyllabus = data.syllabus;
                         const syllabusLines = rawSyllabus.split('\n');
 
-                        // Build clean HTML structure
-                        let syllabusHTML = '';
+                        let currentChapter = null;
+                        let chapterCard = null;
+                        let chapterContent = null;
                         let inList = false;
 
                         syllabusLines.forEach(line => {
                             line = line.trim();
                             if (!line) return; // Skip empty lines
 
-                            // Handle headers
+                            // Handle chapter headers (main sections)
                             if (line.startsWith('# ')) {
-                                syllabusHTML += `<h2>${line.substring(2)}</h2>`;
+                                // Create new chapter card
+                                chapterCard = document.createElement('div');
+                                chapterCard.className = 'bg-indigo-50 rounded-lg shadow-md p-4 mb-4';
+
+                                const chapterTitle = document.createElement('h3');
+                                chapterTitle.className = 'text-lg font-semibold text-indigo-800 border-b border-indigo-200 pb-2 mb-3';
+                                chapterTitle.textContent = line.substring(2);
+                                chapterCard.appendChild(chapterTitle);
+
+                                chapterContent = document.createElement('div');
+                                chapterContent.className = 'text-gray-700 space-y-2';
+                                chapterCard.appendChild(chapterContent);
+
+                                syllabusContent.appendChild(chapterCard);
+                                currentChapter = line.substring(2);
+                                inList = false;
                             }
+                            // Handle sub-headers
                             else if (line.startsWith('## ')) {
-                                syllabusHTML += `<h3>${line.substring(3)}</h3>`;
+                                if (inList) {
+                                    chapterContent.innerHTML += inList === 'ul' ? '</ul>' : '</ol>';
+                                    inList = false;
+                                }
+
+                                const subHeader = document.createElement('h4');
+                                subHeader.className = 'text-md font-medium text-indigo-700 mt-3 mb-2';
+                                subHeader.textContent = line.substring(3);
+
+                                if (chapterContent) {
+                                    chapterContent.appendChild(subHeader);
+                                } else {
+                                    // If no chapter card exists yet, create a default one
+                                    chapterCard = document.createElement('div');
+                                    chapterCard.className = 'bg-indigo-50 rounded-lg shadow-md p-4 mb-4';
+
+                                    const chapterTitle = document.createElement('h3');
+                                    chapterTitle.className = 'text-lg font-semibold text-indigo-800 border-b border-indigo-200 pb-2 mb-3';
+                                    chapterTitle.textContent = 'Chapter Content';
+                                    chapterCard.appendChild(chapterTitle);
+
+                                    chapterContent = document.createElement('div');
+                                    chapterContent.className = 'text-gray-700 space-y-2';
+                                    chapterCard.appendChild(chapterContent);
+                                    chapterContent.appendChild(subHeader);
+
+                                    syllabusContent.appendChild(chapterCard);
+                                }
                             }
                             // Handle list items
                             else if (line.startsWith('- ') || line.startsWith('* ')) {
-                                if (!inList) {
-                                    syllabusHTML += '<ul>';
-                                    inList = true;
+                                if (!chapterContent) {
+                                    // Create default chapter card if none exists
+                                    chapterCard = document.createElement('div');
+                                    chapterCard.className = 'bg-indigo-50 rounded-lg shadow-md p-4 mb-4';
+
+                                    const chapterTitle = document.createElement('h3');
+                                    chapterTitle.className = 'text-lg font-semibold text-indigo-800 border-b border-indigo-200 pb-2 mb-3';
+                                    chapterTitle.textContent = 'General Topics';
+                                    chapterCard.appendChild(chapterTitle);
+
+                                    chapterContent = document.createElement('div');
+                                    chapterContent.className = 'text-gray-700 space-y-2';
+                                    chapterCard.appendChild(chapterContent);
+
+                                    syllabusContent.appendChild(chapterCard);
                                 }
-                                syllabusHTML += `<li>${line.substring(2)}</li>`;
+
+                                if (inList !== 'ul') {
+                                    if (inList) chapterContent.innerHTML += inList === 'ul' ? '</ul>' : '</ol>';
+                                    chapterContent.innerHTML += '<ul class="list-disc ml-5 space-y-1">';
+                                    inList = 'ul';
+                                }
+                                chapterContent.innerHTML += `<li>${line.substring(2)}</li>`;
                             }
                             else if (line.match(/^\d+\.\s/)) {
-                                if (!inList) {
-                                    syllabusHTML += '<ol>';
-                                    inList = true;
+                                if (!chapterContent) {
+                                    // Create default chapter card if none exists
+                                    chapterCard = document.createElement('div');
+                                    chapterCard.className = 'bg-indigo-50 rounded-lg shadow-md p-4 mb-4';
+
+                                    const chapterTitle = document.createElement('h3');
+                                    chapterTitle.className = 'text-lg font-semibold text-indigo-800 border-b border-indigo-200 pb-2 mb-3';
+                                    chapterTitle.textContent = 'General Topics';
+                                    chapterCard.appendChild(chapterTitle);
+
+                                    chapterContent = document.createElement('div');
+                                    chapterContent.className = 'text-gray-700 space-y-2';
+                                    chapterCard.appendChild(chapterContent);
+
+                                    syllabusContent.appendChild(chapterCard);
                                 }
-                                syllabusHTML += `<li>${line.substring(line.indexOf('.') + 1)}</li>`;
+
+                                if (inList !== 'ol') {
+                                    if (inList) chapterContent.innerHTML += inList === 'ul' ? '</ul>' : '</ol>';
+                                    chapterContent.innerHTML += '<ol class="list-decimal ml-5 space-y-1">';
+                                    inList = 'ol';
+                                }
+                                chapterContent.innerHTML += `<li>${line.substring(line.indexOf('.') + 1)}</li>`;
                             }
-                            // Close lists when needed
+                            // Regular paragraph
                             else {
+                                if (!chapterContent) {
+                                    // Create default chapter card if none exists
+                                    chapterCard = document.createElement('div');
+                                    chapterCard.className = 'bg-indigo-50 rounded-lg shadow-md p-4 mb-4';
+
+                                    const chapterTitle = document.createElement('h3');
+                                    chapterTitle.className = 'text-lg font-semibold text-indigo-800 border-b border-indigo-200 pb-2 mb-3';
+                                    chapterTitle.textContent = 'General Content';
+                                    chapterCard.appendChild(chapterTitle);
+
+                                    chapterContent = document.createElement('div');
+                                    chapterContent.className = 'text-gray-700 space-y-2';
+                                    chapterCard.appendChild(chapterContent);
+
+                                    syllabusContent.appendChild(chapterCard);
+                                }
+
                                 if (inList) {
-                                    syllabusHTML += inList ? '</ul>' : '</ol>';
+                                    chapterContent.innerHTML += inList === 'ul' ? '</ul>' : '</ol>';
                                     inList = false;
                                 }
-                                syllabusHTML += `<p>${line}</p>`;
+
+                                const paragraph = document.createElement('p');
+                                paragraph.textContent = line;
+                                chapterContent.appendChild(paragraph);
                             }
                         });
 
                         // Close any open list
-                        if (inList) {
-                            syllabusHTML += inList ? '</ul>' : '</ol>';
+                        if (inList && chapterContent) {
+                            chapterContent.innerHTML += inList === 'ul' ? '</ul>' : '</ol>';
                         }
 
-                        syllabusContent.innerHTML = syllabusHTML;
-
-                        // SCHEDULE SECTION - Complete rebuild
+                        // SCHEDULE SECTION - Complete rebuild with time-of-day sections
                         const scheduleContent = document.getElementById('scheduleContent');
-                        scheduleContent.innerHTML = '';
+                        scheduleContent.className = 'grid grid-cols-1 gap-6';
 
                         const rawSchedule = data.schedule;
                         const scheduleLines = rawSchedule.split('\n');
 
                         let currentDay = null;
-                        let dayContainer = null;
+                        let dayCard = null;
+                        let timeSection = null;
+                        let currentTimeOfDay = null;
 
                         scheduleLines.forEach(line => {
                             line = line.trim();
@@ -370,54 +470,144 @@
                             const dayMatch = line.match(/^#+\s*(Day \d+|Day Before Exam|.*?Day.*?)/i);
                             if (dayMatch) {
                                 // Create new day card
-                                dayContainer = document.createElement('div');
-                                dayContainer.className = 'day-card';
+                                dayCard = document.createElement('div');
+                                dayCard.className = 'bg-white rounded-lg shadow-md border-l-4 border-indigo-500';
 
-                                const dayTitle = document.createElement('div');
-                                dayTitle.className = 'day-title';
+                                const dayHeader = document.createElement('div');
+                                dayHeader.className = 'bg-gray-50 px-4 py-3 rounded-t-lg border-b border-gray-200';
+
+                                const dayTitle = document.createElement('h3');
+                                dayTitle.className = 'text-xl font-semibold text-indigo-700';
                                 dayTitle.textContent = dayMatch[1];
-                                dayContainer.appendChild(dayTitle);
+                                dayHeader.appendChild(dayTitle);
 
-                                scheduleContent.appendChild(dayContainer);
+                                dayCard.appendChild(dayHeader);
+
+                                const dayContent = document.createElement('div');
+                                dayContent.className = 'p-4';
+                                dayCard.appendChild(dayContent);
+
+                                // Create morning, afternoon, evening sections
+                                const timeBlocks = document.createElement('div');
+                                timeBlocks.className = 'grid grid-cols-1 md:grid-cols-3 gap-4';
+
+                                // Morning section
+                                const morningSection = document.createElement('div');
+                                morningSection.className = 'bg-blue-50 rounded-lg p-3';
+
+                                const morningHeader = document.createElement('h4');
+                                morningHeader.className = 'font-medium text-blue-800 border-b border-blue-100 pb-2 mb-2 flex items-center';
+                                morningHeader.innerHTML = '<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 2zM10 15a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 0110 15zM10 7a3 3 0 100 6 3 3 0 000-6zM15.657 5.404a.75.75 0 10-1.06-1.06l-1.061 1.06a.75.75 0 001.06 1.06l1.06-1.06zM6.464 14.596a.75.75 0 10-1.06-1.06l-1.06 1.06a.75.75 0 001.06 1.06l1.06-1.06zM18 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0118 10zM5 10a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 015 10zM14.596 15.657a.75.75 0 001.06-1.06l-1.06-1.061a.75.75 0 10-1.06 1.06l1.06 1.06zM5.404 6.464a.75.75 0 001.06-1.06l-1.06-1.06a.75.75 0 10-1.06 1.06l1.06 1.06z"></path></svg>Morning';
+                                morningSection.appendChild(morningHeader);
+
+                                const morningContent = document.createElement('div');
+                                morningContent.className = 'morning-content text-sm space-y-2';
+                                morningSection.appendChild(morningContent);
+
+                                // Afternoon section
+                                const afternoonSection = document.createElement('div');
+                                afternoonSection.className = 'bg-yellow-50 rounded-lg p-3';
+
+                                const afternoonHeader = document.createElement('h4');
+                                afternoonHeader.className = 'font-medium text-yellow-800 border-b border-yellow-100 pb-2 mb-2 flex items-center';
+                                afternoonHeader.innerHTML = '<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"></path></svg>Afternoon';
+                                afternoonSection.appendChild(afternoonHeader);
+
+                                const afternoonContent = document.createElement('div');
+                                afternoonContent.className = 'afternoon-content text-sm space-y-2';
+                                afternoonSection.appendChild(afternoonContent);
+
+                                // Evening section
+                                const eveningSection = document.createElement('div');
+                                eveningSection.className = 'bg-purple-50 rounded-lg p-3';
+
+                                const eveningHeader = document.createElement('h4');
+                                eveningHeader.className = 'font-medium text-purple-800 border-b border-purple-100 pb-2 mb-2 flex items-center';
+                                eveningHeader.innerHTML = '<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>Evening';
+                                eveningSection.appendChild(eveningHeader);
+
+                                const eveningContent = document.createElement('div');
+                                eveningContent.className = 'evening-content text-sm space-y-2';
+                                eveningSection.appendChild(eveningContent);
+
+                                timeBlocks.appendChild(morningSection);
+                                timeBlocks.appendChild(afternoonSection);
+                                timeBlocks.appendChild(eveningSection);
+
+                                dayContent.appendChild(timeBlocks);
+                                scheduleContent.appendChild(dayCard);
+
                                 currentDay = dayMatch[1];
+                                currentTimeOfDay = null;
                             }
                             // Check if this is a time slot (xx:xx AM - xx:xx PM)
                             else if (line.match(/\d{1,2}:\d{2}\s*(?:AM|PM)\s*[-–]\s*\d{1,2}:\d{2}\s*(?:AM|PM)/i)) {
-                                if (!dayContainer) {
-                                    dayContainer = document.createElement('div');
-                                    dayContainer.className = 'day-card';
-                                    scheduleContent.appendChild(dayContainer);
+                                if (!dayCard) {
+                                    // Create default day card if none exists
+                                    dayCard = createDefaultDayCard();
+                                    scheduleContent.appendChild(dayCard);
                                 }
 
                                 const timeMatch = line.match(/(\d{1,2}:\d{2}\s*(?:AM|PM)\s*[-–]\s*\d{1,2}:\d{2}\s*(?:AM|PM))\s*[:–-]?\s*(.*)/i);
 
                                 if (timeMatch) {
-                                    const timeBlock = document.createElement('div');
-                                    timeBlock.className = 'time-block';
+                                    const timeRange = timeMatch[1];
+                                    const activity = timeMatch[2];
 
-                                    const timeLabel = document.createElement('div');
-                                    timeLabel.className = 'time-label';
-                                    timeLabel.textContent = timeMatch[1];
+                                    // Determine time of day (morning, afternoon, evening)
+                                    let timeOfDay = 'morning';
+                                    if (timeRange.match(/PM/) && !timeRange.match(/12:\d{2}\s*PM/)) {
+                                        if (timeRange.match(/[1-5]:\d{2}\s*PM/)) {
+                                            timeOfDay = 'afternoon';
+                                        } else {
+                                            timeOfDay = 'evening';
+                                        }
+                                    }
 
-                                    const timeContent = document.createElement('div');
-                                    timeContent.className = 'time-content';
-                                    timeContent.textContent = timeMatch[2];
+                                    // Get the appropriate section
+                                    const section = dayCard.querySelector(`.${timeOfDay}-content`);
 
-                                    timeBlock.appendChild(timeLabel);
-                                    timeBlock.appendChild(timeContent);
-                                    dayContainer.appendChild(timeBlock);
-                                } else {
-                                    // Regular paragraph in a day
-                                    const paragraph = document.createElement('p');
-                                    paragraph.textContent = line;
-                                    dayContainer.appendChild(paragraph);
+                                    if (section) {
+                                        const timeBlock = document.createElement('div');
+                                        timeBlock.className = 'time-block bg-white bg-opacity-60 rounded px-2 py-1 mb-2';
+
+                                        const timeLabel = document.createElement('div');
+                                        timeLabel.className = 'text-xs font-semibold text-gray-600';
+                                        timeLabel.textContent = timeRange;
+
+                                        const timeActivity = document.createElement('div');
+                                        timeActivity.className = 'text-gray-800';
+                                        timeActivity.textContent = activity;
+
+                                        timeBlock.appendChild(timeLabel);
+                                        timeBlock.appendChild(timeActivity);
+                                        section.appendChild(timeBlock);
+                                    }
                                 }
                             }
-                            else if (dayContainer) {
-                                // Regular paragraph in a day
+                            else if (dayCard) {
+                                // General content - add to notes section
+                                if (!dayCard.querySelector('.day-notes')) {
+                                    const notesSection = document.createElement('div');
+                                    notesSection.className = 'day-notes mt-4 p-3 bg-gray-50 rounded-lg';
+
+                                    const notesHeader = document.createElement('h4');
+                                    notesHeader.className = 'text-sm font-medium text-gray-700 border-b border-gray-200 pb-1 mb-2';
+                                    notesHeader.textContent = 'Notes';
+                                    notesSection.appendChild(notesHeader);
+
+                                    const notesContent = document.createElement('div');
+                                    notesContent.className = 'text-sm text-gray-600';
+                                    notesSection.appendChild(notesContent);
+
+                                    dayCard.querySelector('div:nth-child(2)').appendChild(notesSection);
+                                }
+
+                                const notesContent = dayCard.querySelector('.day-notes div');
                                 const paragraph = document.createElement('p');
+                                paragraph.className = 'mb-1';
                                 paragraph.textContent = line;
-                                dayContainer.appendChild(paragraph);
+                                notesContent.appendChild(paragraph);
                             }
                         });
 
