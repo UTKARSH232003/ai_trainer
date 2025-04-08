@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Preparation Scheduler</title>
+    <title>Virtual Exam Preparation Trainer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -13,8 +13,6 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* More explicit styling that won't depend on AI formatting */
-        /* Theme variables */
         .content-card {
             margin-bottom: 20px;
         }
@@ -59,7 +57,6 @@
             margin-bottom: 8px;
         }
 
-        /* Day card styling */
         .day-card {
             background-color: #f9fafb;
             border-radius: 8px;
@@ -110,91 +107,94 @@
     </style>
 </head>
 
-<!-- <body class="bg-gradient-to-br from-indigo-100 to-purple-100 min-h-screen"> -->
-    <body class="bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-gray-900 dark:to-indigo-950 min-h-screen transition-colors duration-300">
+<body
+    class="bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-gray-900 dark:to-indigo-950 min-h-screen transition-colors duration-300">
 
     <nav class="bg-gray-800">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-          <div class="relative flex h-16 items-center justify-between">
-            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-              <!-- Mobile menu button-->
-              <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset" aria-controls="mobile-menu" aria-expanded="false">
-                <span class="absolute -inset-0.5"></span>
-                <span class="sr-only">Open main menu</span>
-                <!--
-                  Icon when menu is closed.
-      
-                  Menu open: "hidden", Menu closed: "block"
-                -->
-                <svg class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-                <!--
-                  Icon when menu is open.
-      
-                  Menu open: "block", Menu closed: "hidden"
-                -->
-                <svg class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-              <div class="flex shrink-0 items-center">
-                <img class="h-8 w-auto" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
-              </div>
-              <div class="hidden sm:ml-6 sm:block">
-                <div class="flex space-x-4">
-                  <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                  <a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
-                  <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-                  <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Feedback</a>
-                  <a href="user.html" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Users</a>
-                </div>
-              </div>
-            </div>
-            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button id="theme-toggle" type="button" class="relative rounded-full bg-gray-700 p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
-                    <span class="sr-only">Toggle dark mode</span>
-                    <!-- Sun icon (shown in dark mode) -->
-                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
-                    </svg>
-                    <!-- Moon icon (shown in light mode) -->
-                    <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                    </svg>
-                  </button>
-      
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      
-        <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="sm:hidden" id="mobile-menu">
-          <div class="space-y-1 px-2 pt-2 pb-3">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
-          </div>
-        </div>
-      </nav>
-      
+            <div class="relative flex h-16 items-center justify-between">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <button type="button"
+                        class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="absolute -inset-0.5"></span>
+                        <span class="sr-only">Open main menu</span>
 
-      <div class="container mx-auto px-4 py-8 transition-colors duration-300">
-        <!-- Header -->
+                        <svg class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" aria-hidden="true" data-slot="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+
+                        <svg class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" aria-hidden="true" data-slot="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="flex shrink-0 items-center">
+                        <img class="h-8 w-auto"
+                            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
+                            alt="Your Company">
+                    </div>
+                    <div class="hidden sm:ml-6 sm:block">
+                        <div class="flex space-x-4">
+                            <a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
+                                aria-current="page">Dashboard</a>
+                            <a href="#"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
+                            <a href="feedback.html"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Feedback</a>
+                            <a href="user.html"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Users</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <button id="theme-toggle" type="button"
+                        class="relative rounded-full bg-gray-700 p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white">
+                        <span class="sr-only">Toggle dark mode</span>
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                fill-rule="evenodd" clip-rule="evenodd"></path>
+                        </svg>
+                        <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+
+
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="sm:hidden" id="mobile-menu">
+            <div class="space-y-1 px-2 pt-2 pb-3">
+                <a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
+                    aria-current="page">Dashboard</a>
+                <a href="#"
+                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
+                <a href="#"
+                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
+                <a href="#"
+                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container mx-auto px-4 py-8 transition-colors duration-300">
         <header class="text-center mb-10">
-            <h1 class="text-4xl font-bold text-indigo-800 mb-2">Exam Preparation Scheduler</h1>
-            <p class="text-lg dark:bg-gray-800 dark:text-gray-300">Plan your exam preparation effectively and ace your tests</p>
+            <h1 class="text-4xl font-bold text-indigo-800 mb-2">Virtual Exam Preparation Trainer</h1>
+            <p class="text-lg dark:bg-gray-1000 dark:text-gray-300">Plan your exam preparation effectively and ace your tests</p>
         </header>
 
-        <!-- Main Content -->
         <main class="max-w-3xl mx-auto">
-            <!-- Input Form Card -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
                 <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
                     <i class="fas fa-calendar-alt mr-2"></i>Create Your Study Plan
@@ -252,7 +252,6 @@
                 </form>
             </div>
 
-            <!-- Loading State -->
             <div id="loadingState" class="hidden bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8 text-center">
                 <div class="flex flex-col items-center justify-center">
                     <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600 mb-4"></div>
@@ -262,9 +261,7 @@
                 </div>
             </div>
 
-            <!-- Results Container -->
             <div id="resultsContainer" class="hidden">
-                <!-- Syllabus Card -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
                     <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
                         <i class="fas fa-book mr-2"></i>Syllabus Breakdown
@@ -272,7 +269,6 @@
                     <div id="syllabusContent" class="prose max-w-none"></div>
                 </div>
 
-                <!-- Study Schedule Card -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
                     <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
                         <i class="fas fa-clock mr-2"></i>Daily Study Schedule
@@ -280,12 +276,12 @@
                     <div id="scheduleContent" class="prose max-w-none"></div>
                 </div>
 
-                <!-- MCQ Test Button -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8 text-center">
                     <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
                         <i class="fas fa-check-circle mr-2"></i>Test Your Knowledge
                     </h2>
-                    <p class="bg-white dark:bg-gray-800 dark:text-gray-300 mb-4">Ready to check how well you've mastered the material?</p>
+                    <p class="bg-white dark:bg-gray-800 dark:text-gray-300 mb-4">Ready to check how well you've mastered
+                        the material?</p>
                     <button id="startMCQButton"
                         class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
                         Start MCQ Test
@@ -293,7 +289,6 @@
                 </div>
             </div>
 
-            <!-- MCQ Test Container -->
             <div id="mcqContainer" class="hidden bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
                 <h2 class="text-2xl font-semibold text-indigo-700 mb-4">
                     <i class="fas fa-question-circle mr-2"></i>Knowledge Check
@@ -307,7 +302,6 @@
                 </div>
             </div>
 
-            <!-- Results Modal -->
             <div id="resultsModal"
                 class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 max-w-lg w-full mx-4">
@@ -323,9 +317,8 @@
             </div>
         </main>
 
-        <!-- Footer -->
-        <footer class="text-center mt-12 dark:bg-gray-800 dark:text-gray-300 text-sm">
-            <p>© 2025 Exam Preparation Scheduler | Made with ❤️ for students</p>
+        <footer class="text-center mt-12 dark:bg-gray-1000 dark:text-gray-300 text-sm">
+            <p>© 2025 Virtual Exam Preparation Trainer | Made with ❤️ for students</p>
         </footer>
     </div>
 
@@ -340,27 +333,21 @@
             const resultsModal = document.getElementById('resultsModal');
             const closeResultsButton = document.getElementById('closeResultsButton');
 
-            // Form submission
             examForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
-                // Show loading state
                 examForm.parentElement.classList.add('hidden');
                 loadingState.classList.remove('hidden');
 
-                // Gather form data
                 const formData = new FormData(examForm);
                 const data = Object.fromEntries(formData.entries());
 
-                // Calculate days until exam
                 const today = new Date();
                 const examDate = new Date(data.examDate);
                 const daysUntilExam = Math.ceil((examDate - today) / (1000 * 60 * 60 * 24));
 
-                // Add to data object
                 data.daysUntilExam = daysUntilExam;
 
-                // Send data to server
                 fetch('/generate-plan', {
                     method: 'POST',
                     headers: {
@@ -369,19 +356,14 @@
                     body: JSON.stringify(data)
                 })
                     .then(response => response.json())
-                    // Add this to the fetch handler that processes the server response 
                     .then(data => {
-                        // Hide loading state
                         loadingState.classList.add('hidden');
 
-                        // Show results
                         resultsContainer.classList.remove('hidden');
 
-                        // SYLLABUS SECTION - Complete rebuild
                         const syllabusContent = document.getElementById('syllabusContent');
                         syllabusContent.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
 
-                        // Parse the raw syllabus content to extract sections
                         const rawSyllabus = data.syllabus;
                         const syllabusLines = rawSyllabus.split('\n');
 
@@ -392,11 +374,9 @@
 
                         syllabusLines.forEach(line => {
                             line = line.trim();
-                            if (!line) return; // Skip empty lines
+                            if (!line) return;
 
-                            // Handle chapter headers (main sections)
                             if (line.startsWith('# ')) {
-                                // Create new chapter card
                                 chapterCard = document.createElement('div');
                                 chapterCard.className = 'bg-indigo-50 rounded-lg shadow-md p-4 mb-4';
 
@@ -413,7 +393,6 @@
                                 currentChapter = line.substring(2);
                                 inList = false;
                             }
-                            // Handle sub-headers
                             else if (line.startsWith('## ')) {
                                 if (inList) {
                                     chapterContent.innerHTML += inList === 'ul' ? '</ul>' : '</ol>';
@@ -427,7 +406,6 @@
                                 if (chapterContent) {
                                     chapterContent.appendChild(subHeader);
                                 } else {
-                                    // If no chapter card exists yet, create a default one
                                     chapterCard = document.createElement('div');
                                     chapterCard.className = 'bg-indigo-50 rounded-lg shadow-md p-4 mb-4';
 
@@ -444,10 +422,8 @@
                                     syllabusContent.appendChild(chapterCard);
                                 }
                             }
-                            // Handle list items
                             else if (line.startsWith('- ') || line.startsWith('* ')) {
                                 if (!chapterContent) {
-                                    // Create default chapter card if none exists
                                     chapterCard = document.createElement('div');
                                     chapterCard.className = 'bg-indigo-50 rounded-lg shadow-md p-4 mb-4';
 
@@ -472,7 +448,6 @@
                             }
                             else if (line.match(/^\d+\.\s/)) {
                                 if (!chapterContent) {
-                                    // Create default chapter card if none exists
                                     chapterCard = document.createElement('div');
                                     chapterCard.className = 'bg-indigo-50 rounded-lg shadow-md p-4 mb-4';
 
@@ -495,10 +470,8 @@
                                 }
                                 chapterContent.innerHTML += `<li>${line.substring(line.indexOf('.') + 1)}</li>`;
                             }
-                            // Regular paragraph
                             else {
                                 if (!chapterContent) {
-                                    // Create default chapter card if none exists
                                     chapterCard = document.createElement('div');
                                     chapterCard.className = 'bg-indigo-50 rounded-lg shadow-md p-4 mb-4';
 
@@ -525,12 +498,10 @@
                             }
                         });
 
-                        // Close any open list
                         if (inList && chapterContent) {
                             chapterContent.innerHTML += inList === 'ul' ? '</ul>' : '</ol>';
                         }
 
-                        // SCHEDULE SECTION - Complete rebuild with time-of-day sections
                         const scheduleContent = document.getElementById('scheduleContent');
                         scheduleContent.className = 'grid grid-cols-1 gap-6';
 
@@ -544,12 +515,10 @@
 
                         scheduleLines.forEach(line => {
                             line = line.trim();
-                            if (!line) return; // Skip empty lines
+                            if (!line) return;
 
-                            // Check if this is a day header
                             const dayMatch = line.match(/^#+\s*(Day \d+|Day Before Exam|.*?Day.*?)/i);
                             if (dayMatch) {
-                                // Create new day card
                                 dayCard = document.createElement('div');
                                 dayCard.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-md border-l-4 border-indigo-500';
 
@@ -567,11 +536,9 @@
                                 dayContent.className = 'p-4';
                                 dayCard.appendChild(dayContent);
 
-                                // Create morning, afternoon, evening sections
                                 const timeBlocks = document.createElement('div');
                                 timeBlocks.className = 'grid grid-cols-1 md:grid-cols-3 gap-4';
 
-                                // Morning section
                                 const morningSection = document.createElement('div');
                                 morningSection.className = 'bg-blue-50 rounded-lg p-3';
 
@@ -584,7 +551,6 @@
                                 morningContent.className = 'morning-content text-sm space-y-2';
                                 morningSection.appendChild(morningContent);
 
-                                // Afternoon section
                                 const afternoonSection = document.createElement('div');
                                 afternoonSection.className = 'bg-yellow-50 rounded-lg p-3';
 
@@ -597,7 +563,6 @@
                                 afternoonContent.className = 'afternoon-content text-sm space-y-2';
                                 afternoonSection.appendChild(afternoonContent);
 
-                                // Evening section
                                 const eveningSection = document.createElement('div');
                                 eveningSection.className = 'bg-purple-50 rounded-lg p-3';
 
@@ -620,10 +585,8 @@
                                 currentDay = dayMatch[1];
                                 currentTimeOfDay = null;
                             }
-                            // Check if this is a time slot (xx:xx AM - xx:xx PM)
                             else if (line.match(/\d{1,2}:\d{2}\s*(?:AM|PM)\s*[-–]\s*\d{1,2}:\d{2}\s*(?:AM|PM)/i)) {
                                 if (!dayCard) {
-                                    // Create default day card if none exists
                                     dayCard = createDefaultDayCard();
                                     scheduleContent.appendChild(dayCard);
                                 }
@@ -634,7 +597,6 @@
                                     const timeRange = timeMatch[1];
                                     const activity = timeMatch[2];
 
-                                    // Determine time of day (morning, afternoon, evening)
                                     let timeOfDay = 'morning';
                                     if (timeRange.match(/PM/) && !timeRange.match(/12:\d{2}\s*PM/)) {
                                         if (timeRange.match(/[1-5]:\d{2}\s*PM/)) {
@@ -644,7 +606,6 @@
                                         }
                                     }
 
-                                    // Get the appropriate section
                                     const section = dayCard.querySelector(`.${timeOfDay}-content`);
 
                                     if (section) {
@@ -666,7 +627,6 @@
                                 }
                             }
                             else if (dayCard) {
-                                // General content - add to notes section
                                 if (!dayCard.querySelector('.day-notes')) {
                                     const notesSection = document.createElement('div');
                                     notesSection.className = 'day-notes mt-4 p-3 bg-gray-50 rounded-lg';
@@ -691,7 +651,6 @@
                             }
                         });
 
-                        // MCQ Questions handling
                         if (data.mcqQuestions && data.mcqQuestions.length) {
                             window.mcqQuestions = data.mcqQuestions.slice(0, 10);
                         } else {
@@ -724,12 +683,10 @@
                     });
             });
 
-            // Start MCQ Test button
             startMCQButton.addEventListener('click', function () {
                 resultsContainer.classList.add('hidden');
                 mcqContainer.classList.remove('hidden');
 
-                // Populate MCQ questions
                 const mcqContent = document.getElementById('mcqContent');
                 mcqContent.innerHTML = '';
 
@@ -757,13 +714,11 @@
                 }
             });
 
-            // Submit MCQ Test button
             submitMCQButton.addEventListener('click', function () {
                 const answers = [];
                 let correctAnswers = 0;
                 let totalQuestions = window.mcqQuestions.length;
 
-                // Check answers
                 window.mcqQuestions.forEach((question, index) => {
                     const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
                     if (selectedOption) {
@@ -774,10 +729,8 @@
                     }
                 });
 
-                // Calculate score
                 const score = Math.round((correctAnswers / totalQuestions) * 100);
 
-                // Display results
                 const resultsContent = document.getElementById('resultsContent');
                 resultsContent.innerHTML = `
                     <div class="text-center">
@@ -798,59 +751,52 @@
 
                 resultsModal.classList.remove('hidden');
             });
-            // Theme toggle functionality
-// Theme toggle functionality - place this at the end of your script section
-document.addEventListener('DOMContentLoaded', function() {
-  const themeToggleBtn = document.getElementById('theme-toggle');
-  
-  if (!themeToggleBtn) {
-    console.error('Theme toggle button not found!');
-    return;
-  }
-  
-  const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-  const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-  
-  console.log('Theme toggle initialized');
-  
-  // Check for saved theme preference or use OS default
-  const themePreference = localStorage.getItem('color-theme');
-  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  
-  // Set initial theme
-  if (themePreference === 'dark' || (!themePreference && systemPrefersDark)) {
-    document.documentElement.classList.add('dark');
-    themeToggleLightIcon.classList.remove('hidden');
-    themeToggleDarkIcon.classList.add('hidden');
-    console.log('Initial theme: dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-    themeToggleLightIcon.classList.add('hidden');
-    themeToggleDarkIcon.classList.remove('hidden');
-    console.log('Initial theme: light');
-  }
-  
-  // Set up click handler
-  themeToggleBtn.addEventListener('click', function() {
-    console.log('Theme toggle clicked');
-    
-    // Toggle theme
-    if (document.documentElement.classList.contains('dark')) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('color-theme', 'light');
-      themeToggleLightIcon.classList.add('hidden');
-      themeToggleDarkIcon.classList.remove('hidden');
-      console.log('Switched to light theme');
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('color-theme', 'dark');
-      themeToggleLightIcon.classList.remove('hidden');
-      themeToggleDarkIcon.classList.add('hidden');
-      console.log('Switched to dark theme');
-    }
-  });
-});
-            // Close results modal
+            document.addEventListener('DOMContentLoaded', function () {
+                const themeToggleBtn = document.getElementById('theme-toggle');
+
+                if (!themeToggleBtn) {
+                    console.error('Theme toggle button not found!');
+                    return;
+                }
+
+                const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+                const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+                console.log('Theme toggle initialized');
+
+                const themePreference = localStorage.getItem('color-theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+                if (themePreference === 'dark' || (!themePreference && systemPrefersDark)) {
+                    document.documentElement.classList.add('dark');
+                    themeToggleLightIcon.classList.remove('hidden');
+                    themeToggleDarkIcon.classList.add('hidden');
+                    console.log('Initial theme: dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeToggleLightIcon.classList.add('hidden');
+                    themeToggleDarkIcon.classList.remove('hidden');
+                    console.log('Initial theme: light');
+                }
+
+                themeToggleBtn.addEventListener('click', function () {
+                    console.log('Theme toggle clicked');
+
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                        themeToggleLightIcon.classList.add('hidden');
+                        themeToggleDarkIcon.classList.remove('hidden');
+                        console.log('Switched to light theme');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                        themeToggleLightIcon.classList.remove('hidden');
+                        themeToggleDarkIcon.classList.add('hidden');
+                        console.log('Switched to dark theme');
+                    }
+                });
+            });
             closeResultsButton.addEventListener('click', function () {
                 resultsModal.classList.add('hidden');
                 mcqContainer.classList.add('hidden');
@@ -858,23 +804,23 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     </script>
-    
+
     <script>
-      console.log('Page loaded');
-      console.log('Theme toggle button exists:', !!document.getElementById('theme-toggle'));
-      
-      // Force toggle on the button directly 
-      const toggleBtn = document.getElementById('theme-toggle');
-      if (toggleBtn) {
-        console.log('Adding direct click listener');
-        toggleBtn.onclick = function() {
-          console.log('Button clicked directly!');
-          document.documentElement.classList.toggle('dark');
-          const isDark = document.documentElement.classList.contains('dark');
-          document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', !isDark);
-          document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', isDark);
-        };
-      }
+        console.log('Page loaded');
+        console.log('Theme toggle button exists:', !!document.getElementById('theme-toggle'));
+
+        const toggleBtn = document.getElementById('theme-toggle');
+        if (toggleBtn) {
+            console.log('Adding direct click listener');
+            toggleBtn.onclick = function () {
+                console.log('Button clicked directly!');
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                document.getElementById('theme-toggle-light-icon').classList.toggle('hidden', !isDark);
+                document.getElementById('theme-toggle-dark-icon').classList.toggle('hidden', isDark);
+            };
+        }
     </script>
 </body>
+
 </html>
